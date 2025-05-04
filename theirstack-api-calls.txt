@@ -1,7 +1,7 @@
 AsyncHttpClient client = new DefaultAsyncHttpClient();
 client.prepare("POST", "https://api.theirstack.com/v1/jobs/search")
   .setHeader("Content-Type", "application/json")
-  .setHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJtaG83QGNoYXJsb3R0ZS5lZHUiLCJwZXJtaXNzaW9ucyI6InVzZXIiLCJjcmVhdGVkX2F0IjoiMjAyNS0wMy0wNVQxNDozOTo1MC4wNTc2NTgrMDA6MDAifQ.-MEx5e9wqdtKioMRgy-jyezVs1lru4r_1gc4-R0abDU")
+  .setHeader("Authorization", "")
   .setBody("{\n  \"page\": 0,\n  \"limit\": 5,\n  \"job_country_code_or\": [\n    \"US\"\n  ],\n  \"posted_at_max_age_days\": 7\n}")
   .execute()
   .toCompletableFuture()
