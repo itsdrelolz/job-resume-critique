@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::title}, ~{::main}, ~{::script})}">
+<head>
+    <title>Edit a Job Listing</title>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+</head>
+
+<body>
+
+<main class="container mt-5">
+    <div class="container mt-5">
+        <h2>Edit Job Listing</h2>
+        <form id="editForm" th:action="@{/edit-post/{id}(id=${posting.id})}" method="post" class="card p-4 shadow-sm">
+            <div class="mb-3">
+                <label for="jobTitle" class="form-label">Job Title:</label>
+                <input type="text" id="jobTitle" name="jobTitle" class="form-control" th:value="${posting.jobTitle}" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="companyName" class="form-label">Company Name:</label>
+                <input type="text" id="companyName" name="companyName" class="form-control" th:value="${posting.companyName}" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Job Description:</label>
+                <div id="editor-container" style="height: 200px;" class="mb-3"></div>
+                <input type="hidden" name="jobDescription" id="jobDescription" th:value="${posting.jobDescription}">
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-success">Submit Changes</button>
+                <a th:href="@{/post/{id}(id=${posting.id})}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</main>
+
+<!-- Quill and Bootstrap JS -->
+<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    let quill;
+
+    document.addEventListener("DOMContentLoaded", function () {
+        quill = new Quill('#editor-container', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    ['bold', 'italic', 'underline'],
+                    [{ 'align': [] }],
+                    ['link']
+                ]
+            }
+        });
+
+        // Load the existing job description into the editor
+        const hiddenInput = document.getElementById("jobDescription");
+        quill.root.innerHTML = hiddenInput.value || '';
+
+        // Sync editor content on form submission
+        const form = document.getElementById("editForm");
+        form.addEventListener("submit", function () {
+            hiddenInput.value = quill.root.innerHTML;
+            console.log("Submitting edited jobDescription:", hiddenInput.value);
+        });
+    });
+</script>
+
+</body>
+</html>

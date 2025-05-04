@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::main}, ~{::script})}">
+<head>
+    <title th:text="${pageTitle} ?: 'Job Listing Details'"></title>
+    <style>
+        .meta-info {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .job-description {
+            white-space: pre-wrap;
+        }
+
+        @media (max-width: 576px) {
+            .action-buttons {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<main class="container mt-5 mb-5">
+    <div class="mx-auto" style="max-width: 900px;">
+        <h2 class="mb-4 text-center">Job Post Details</h2>
+
+        <!-- Card -->
+        <div class="card shadow-sm position-relative">
+            <div class="card-body">
+
+                <!-- Button Stack (Top-right) -->
+                <div class="position-absolute top-0 end-0 p-2 d-flex flex-column align-items-end" style="z-index: 10;">
+                    <!-- Like Button -->
+                    <div th:if="${loggedIn}" class="mb-3 w-100">
+                        <form th:action="@{/likePost/{id}(id=${posting.id})}" method="post">
+                            <button type="submit" class="btn btn-outline-danger btn-sm w-100"
+                                    th:classappend="${loggedInUser.isPostLiked(posting.id)} ? ' active' : ''">
+                                <i class="fas fa-heart"></i> Like
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Author-Only Buttons -->
+                    <div th:if="${loggedIn && loggedInUser.username == posting.authorUsername}"
+                         class="d-flex flex-column align-items-end gap-2 w-100">
+                        <a th:href="@{/edit-post/{id}(id=${posting.id})}" class="btn btn-sm btn-warning w-100">Edit</a>
+
+                        <form th:action="@{/delete-post/{id}(id=${posting.id})}" method="post"
+                              onsubmit="return confirm('Are you sure you want to delete this job post?');"
+                              class="w-100">
+                            <button type="submit" class="btn btn-sm btn-danger w-100">Delete</button>
+                        </form>
+
+                        <a th:href="@{/applications(postingId=${posting.id})}" class="btn btn-sm btn-info text-white w-100">
+                            View Applications
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Job Title & Company -->
+                <div class="mb-3">
+                    <h3 class="mb-0" th:text="${posting.jobTitle}"></h3>
+                    <h6 class="text-muted" th:text="${posting.companyName}"></h6>
+                </div>
+
+                <!-- Metadata: Date and Author under title -->
+                <p class="meta-info mb-1" th:text="'Posted on ' + ${#dates.format(posting.timestamp, 'MMMM dd, yyyy')}"></p>
+                <p class="meta-info mb-3" th:text="'Posted by: ' + ${posting.authorUsername}"></p>
+
+                <!-- Description -->
+                <p th:utext="${posting.jobDescription}" class="job-description mb-4"></p>
+
+                <!-- Apply Button -->
+                <div class="text-center mt-4">
+                    <a th:href="@{/apply/{id}(id=${posting.id})}" class="btn btn-primary btn-lg">Apply Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script></script>
+</body>
+</html>

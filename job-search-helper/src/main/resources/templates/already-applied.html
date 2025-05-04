@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::main}, ~{::script})}">
+
+<head>
+    <title>You Already Applied</title>
+</head>
+
+<body>
+<main class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-center py-5">
+                    <h2 class="text-danger mb-4">
+                        <i class="fas fa-exclamation-circle me-2"></i>
+                        Already Applied
+                    </h2>
+                    <p class="lead mb-4">You have already applied to this job listing.</p>
+                    <a href="/posts" class="btn btn-primary">
+                        <i class="fas fa-arrow-left me-1"></i> Back to Listings
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Optional page-specific scripts -->
+<script></script>
+</body>
+</html>

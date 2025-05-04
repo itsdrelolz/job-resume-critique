@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::title}, ~{::main}, ~{::script})}">
+
+<head>
+    <title>Access Denied</title>
+</head>
+
+<body class="d-flex flex-column min-vh-100 text-center">
+
+<!-- Main Content -->
+<main class="d-flex justify-content-center align-items-center flex-grow-1">
+    <div class="col-md-6 col-12">
+        <h2 class="mb-3 text-danger">403 - Access Denied</h2>
+        <p class="mb-4" th:text="${message} ?: 'It looks like you tried to perform an action that isn\’t allowed or wasn\'t meant for you.'"></p>
+        <p class="mb-4 text-muted">If you believe this is a mistake, please return home or contact support. </p>
+        <a href="/home" class="btn btn-primary">Return to Home</a>
+    </div>
+</main>
+
+<script></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::title}, ~{::main}, ~{::script})}">
+<head>
+    <title>500 - Internal Server Error</title>
+</head>
+<body class="d-flex flex-column min-vh-100 text-center">
+
+
+<!-- Error Message -->
+<main class="d-flex justify-content-center align-items-center flex-grow-1">
+    <div class="col-md-6 col-12">
+        <h2 class="mb-3 text-danger">500 - Internal Server Error</h2>
+        <p class="mb-4" th:text="${message} ?: 'Something went wrong on our end. Please try again later.'"></p>
+        <a href="/" class="btn btn-primary">Return to Home</a>
+    </div>
+</main>
+
+<script></script>
+</body>
+</html>

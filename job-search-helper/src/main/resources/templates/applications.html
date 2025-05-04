@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::main}, ~{::script})}">
+<head>
+    <title th:text="'Applications for ' + ${selectedPosting?.jobTitle}">Applications</title>
+    <style>
+        .post-list-item {
+            cursor: pointer;
+            transition: background-color 0.2s ease, box-shadow 0.3s ease;
+        }
+
+        .post-list-item:hover {
+            background-color: #f0f8ff;
+        }
+
+        .job-link {
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+<main class="container mt-4 job-listing-content">
+    <div class="posts-container">
+        <!-- Left Panel: List of Applicants -->
+        <div class="left-panel" style="overflow-y: auto;">
+            <h5 class="job-listings-header">Applicants</h5>
+            <div th:if="${applications != null and !applications.isEmpty()}">
+                <div th:each="app : ${applications}"
+                     class="post-list-item card mb-2"
+                     th:style="${selectedApplication != null and app.id == selectedApplication.id} ?
+                               'border-left: 6px solid #3399ff; background-color: #f2f9ff;' : ''">
+                    <div class="card-body p-2">
+                        <a th:href="@{/applications(postingId=${selectedPosting.id}, selected=${app.id})}"
+                           class="job-link"
+                           th:text="${app.applicantName} + ' (' + ${app.applicantUsername} + ')'"></a>
+                        <p class="small text-muted" th:text="${#dates.format(app.timestamp, 'MM/dd/yyyy')}"></p>
+                        <p><strong>Status:</strong> <span th:text="${app.status} ?: 'Pending'"></span></p>
+                    </div>
+                </div>
+            </div>
+            <div th:if="${applications == null or applications.isEmpty()}">
+                <p class="empty-message">No applications found for this posting.</p>
+            </div>
+        </div>
+
+        <!-- Right Panel: Selected Application Details -->
+        <div class="right-panel card p-3 position-relative" style="overflow-y: auto;">
+            <div th:if="${selectedApplication != null}">
+                <!-- Status Buttons: Top-right placement -->
+                <div style="position: absolute; top: 1rem; right: 1rem; z-index: 10;">
+                    <form th:action="@{/applications/{id}/status(id=${selectedApplication.id})}" method="post" style="display: flex; gap: 0.5rem;">
+                        <input type="hidden" name="postingId" th:value="${selectedPosting.id}"/>
+                        <button name="status" value="Denied" type="submit" class="btn btn-sm btn-danger">Deny</button>
+                        <button name="status" value="Interview" type="submit" class="btn btn-sm btn-warning">Interview</button>
+                    </form>
+                </div>
+
+                <h4 th:text="${selectedApplication.applicantName}"></h4>
+                <h6 class="text-muted mb-2" th:text="${selectedApplication.applicantEmail}"></h6>
+                <p class="small text-muted" th:text="${#dates.format(selectedApplication.timestamp, 'MM/dd/yyyy')}"></p>
+                <p><strong>Status:</strong> <span th:text="${selectedApplication.status} ?: 'Pending'"></span></p>
+                <hr/>
+                <h6>Resume Text:</h6>
+                <pre class="job-desc"
+                     style="white-space: pre-wrap; word-break: break-word; background-color: #f8f9fa; padding: 1rem; border-radius: 8px; font-family: monospace;"
+                     th:text="${selectedApplication.resumeText}"></pre>
+            </div>
+            <div th:if="${selectedApplication == null}">
+                <p>Please select an applicant from the list.</p>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    document.querySelectorAll('.post-list-item').forEach(item => {
+        item.addEventListener('click', () => {
+            const link = item.querySelector('.job-link');
+            if (link) window.location = link.href;
+        });
+    });
+</script>
+</body>
+</html>

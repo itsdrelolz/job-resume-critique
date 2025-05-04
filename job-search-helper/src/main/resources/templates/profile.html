@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::mainContent}, ~{::script})}">
+
+<head>
+    <title>Your Profile - SelfBuilder</title>
+    <style>
+        .card-title {
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 0.4rem;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .list-group-item {
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+        }
+
+        .list-group-item a {
+            font-weight: 500;
+            font-size: 1rem;
+            text-decoration: none;
+            word-break: break-word;
+        }
+
+        .badge {
+            margin-top: 0.5rem;
+            align-self: flex-start;
+        }
+
+        .list-group-item small {
+            display: block;
+            margin-top: 2px;
+            color: #6c757d;
+        }
+    </style>
+
+</head>
+
+<body>
+<main class="container mt-5 mb-5" th:fragment="mainContent">
+    <div class="text-center mb-4">
+        <h2>Welcome, <span th:text="${user.firstName} + ' ' + ${user.lastName}"></span>!</h2>
+        <p class="text-muted">Username: <span th:text="${user.username}"></span></p>
+    </div>
+
+    <!-- Grid Layout for Skills & Applications -->
+    <div class="row row-cols-1 row-cols-md-2 g-4 mb-4">
+        <!-- Skills -->
+        <div class="col">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <div class="card-title">Your Skills</div>
+                    <form th:action="@{/updateSkills}" method="post">
+                        <ul class="list-group mb-3">
+                            <li th:each="skill : ${availableSkills}" class="list-group-item">
+                                <input type="checkbox" th:name="selectedSkills" th:value="${skill.name}"
+                                       th:checked="${user.userSkills.contains(skill)}" />
+                                <label th:text="${skill.name}"></label>
+                            </li>
+                        </ul>
+                        <button type="submit" class="btn btn-primary mt-auto">Update Skills</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Applications -->
+        <div class="col">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <div class="card-title">Jobs You've Applied To</div>
+                    <div th:if="${applications != null and !applications.isEmpty()}">
+                        <ul class="list-group">
+                            <li th:each="entry : ${applications}" class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <a th:href="@{/post/{id}(id=${entry.posting.id})}" th:text="${entry.posting.jobTitle}"></a><br>
+                                    <small class="text-muted" th:text="${entry.posting.companyName}"></small>
+                                </div>
+                                <span class="badge bg-secondary" th:text="${entry.application.status}">Pending</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <p class="text-muted" th:if="${applications == null or applications.isEmpty()}">You haven't applied to any jobs yet.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Grid Layout for Postings & Liked -->
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        <!-- Your Postings -->
+        <div class="col">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <div class="card-title">Your Job Postings</div>
+                    <div th:if="${userPostings != null and !userPostings.isEmpty()}">
+                        <ul class="list-group">
+                            <li th:each="posting : ${userPostings}" class="list-group-item">
+                                <a th:href="@{/post/{id}(id=${posting.id})}" th:text="${posting.jobTitle}"></a><br>
+                                <small class="text-muted" th:text="${posting.companyName}"></small>
+                            </li>
+                        </ul>
+                    </div>
+                    <p class="text-muted" th:if="${userPostings == null or userPostings.isEmpty()}">You haven't created any job postings yet.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Liked Posts -->
+        <div class="col">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <div class="card-title">Liked Job Postings</div>
+                    <div th:if="${likedPosts != null and !likedPosts.isEmpty()}">
+                        <ul class="list-group">
+                            <li th:each="posting : ${likedPosts}" class="list-group-item">
+                                <a th:href="@{/post/{id}(id=${posting.id})}" th:text="${posting.jobTitle}"></a><br>
+                                <small class="text-muted" th:text="${posting.companyName}"></small>
+                            </li>
+                        </ul>
+                    </div>
+                    <p class="text-muted" th:if="${likedPosts == null or likedPosts.isEmpty()}">You haven't liked any job postings yet.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script></script>
+</body>
+</html>

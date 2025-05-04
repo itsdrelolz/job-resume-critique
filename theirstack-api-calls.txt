@@ -1,0 +1,32 @@
+AsyncHttpClient client = new DefaultAsyncHttpClient();
+client.prepare("POST", "https://api.theirstack.com/v1/jobs/search")
+  .setHeader("Content-Type", "application/json")
+  .setHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJtaG83QGNoYXJsb3R0ZS5lZHUiLCJwZXJtaXNzaW9ucyI6InVzZXIiLCJjcmVhdGVkX2F0IjoiMjAyNS0wMy0wNVQxNDozOTo1MC4wNTc2NTgrMDA6MDAifQ.-MEx5e9wqdtKioMRgy-jyezVs1lru4r_1gc4-R0abDU")
+  .setBody("{\n  \"page\": 0,\n  \"limit\": 5,\n  \"job_country_code_or\": [\n    \"US\"\n  ],\n  \"posted_at_max_age_days\": 7\n}")
+  .execute()
+  .toCompletableFuture()
+  .thenAccept(System.out::println)
+  .join();
+
+client.close();
+
+
+/*
+required json to complete the api pull
+
+{
+  "page": 0,
+  "limit": 5, 
+  "job_country_code_or": [
+    "US"
+  ],
+  "posted_at_max_age_days": 7
+}
+
+It requires at least one of the following filters to work
+
+posted_at_max_age_days
+posted_at_gte
+posted_at_lte
+company_name_or
+*/

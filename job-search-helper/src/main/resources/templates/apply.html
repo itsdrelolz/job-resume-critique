@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"th:replace="~{layout :: layout(~{::title}, ~{::main}, ~{::script})}">
+<head>
+    <title>Job Application - SelfBuilder</title>
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+<!-- Main Content (Job Application Form) -->
+<main class="d-flex justify-content-center align-items-center flex-grow-1">
+    <div class="col-md-6 col-12">
+        <h2 class="mb-3 text-center">Apply for Job</h2>
+
+
+        <!-- Job Application Form -->
+        <form th:action="@{/apply}" method="post" enctype="multipart/form-data" class="border p-4 rounded shadow-sm">
+            <!-- Job Title and Company Name -->
+            <div class="mb-4 text-center">
+                <h5 class="mb-1" th:text="${posting.jobTitle}"></h5>
+                <p class="mb-1" th:text="${posting.companyName}"></p>
+            </div>
+
+            <input type="hidden" th:value="${posting.id}" name="postingId" />
+
+            <!-- Name Input -->
+            <div class="mb-3">
+                <label for="applicantName" class="form-label">Your Name</label>
+                <input required type="text" th:value="${loggedInUser.firstName + ' ' + loggedInUser.lastName}"  id="applicantName" class="form-control" placeholder="Enter your name" name="applicantName">
+            </div>
+
+            <!-- Email Input -->
+            <div class="mb-3">
+                <label for="email" class="form-label">Your Email</label>
+                <input required type="email" id="email" class="form-control" placeholder="Enter your email" name="email">
+            </div>
+
+            <!-- Resume Upload -->
+            <div class="mb-3">
+                <label for="resumeFile" class="form-label">Upload Resume (PDF/DOCX)</label>
+                <input required type="file" class="form-control" id="resumeFile" name="resumeFile" accept=".pdf,.docx" />
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary w-100">Apply Now</button>
+        </form>
+    </div>
+</main>
+
+<script></script>
+
+</body>
+</html>

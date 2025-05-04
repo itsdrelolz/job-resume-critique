@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::title}, ~{::main}, ~{::script})}">
+<head>
+    <title>Signup - SelfBuilder</title>
+</head>
+<body>
+<!-- Main Content (signup form) -->
+<main class="container mt-5"> <!-- ✅ Removed text-center -->
+    <div class="d-flex justify-content-center align-items-center flex-grow-1">
+        <div class="col-md-4 col-12">
+            <h2 class="mb-4 text-center">Create Your Account</h2>
+
+            <!-- Signup Form -->
+            <form action="#" th:action="@{/signup}" th:object="${user}" method="post" class="border p-4 rounded shadow-sm">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input required th:field="*{username}" type="text" id="username" class="form-control" placeholder="Enter your username">
+                    <span style="color: red;" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label for="firstName" class="form-label">First Name</label>
+                    <input required th:field="*{firstName}" type="text" id="firstName" class="form-control" placeholder="Enter your first name">
+                </div>
+
+                <div class="mb-3">
+                    <label for="lastName" class="form-label">Last Name</label>
+                    <input required th:field="*{lastName}" type="text" id="lastName" class="form-control" placeholder="Enter your last name">
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input required th:field="*{password}" type="password" id="password" class="form-control" placeholder="Enter your password">
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+            </form>
+
+            <p class="mt-3 text-center">Already have an account? <a href="/login">Login here</a>.</p>
+        </div>
+    </div>
+</main>
+<script></script>
+</body>
+</html>

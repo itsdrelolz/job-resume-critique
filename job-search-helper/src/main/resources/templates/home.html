@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::main}, ~{::script})}">
+<head>
+    <title>Home - SelfBuilder</title>
+</head>
+
+<body>
+<main class="container text-center mt-5">
+    <h1 class="display-4">Welcome to SelfBuilder</h1>
+    <p class="lead">Find your dream job today.</p>
+    <a href="/posts" class="btn btn-primary btn-lg">Browse Jobs</a>
+</main>
+
+<!-- Empty script block to satisfy layout requirement -->
+<script></script>
+</body>
+</html>
